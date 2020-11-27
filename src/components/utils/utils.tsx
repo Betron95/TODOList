@@ -6,7 +6,8 @@ export function addNewList(newList:string, lists: any, setLists:any, clearName: 
   setLists({...lists, [newList]: []})
   clearName('');
 }
-export function removeList(list:any, lists: any, setLists:any) {
+
+export function removeList(list:string, lists: any, setLists:any) {
   if(list in lists) {
     const newLists = {...lists}
     delete newLists[list];
@@ -14,7 +15,7 @@ export function removeList(list:any, lists: any, setLists:any) {
   }
 }
 
-export function addNewListItem(allLists: any, currentlist:string, newItem: any, updateMethod: any, clearName: any) {
+export function addNewListItem(allLists: any, currentlist:string, newItem: string, updateMethod: any, clearName: any) {
   if(newItem === '') {
     return;
   }

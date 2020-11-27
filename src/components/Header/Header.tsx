@@ -1,10 +1,10 @@
-// import React from 'react';
+import { Head, Title } from "../../styles/common";
 
 function Header() {
   return (
-    <div className="header">
-      <h1>Welcome to TODOLists!</h1>
-    </div>
+    <Head className="header">
+      <Title>Welcome to To Do Lists App!</Title>
+    </Head>
   );
 }
 
