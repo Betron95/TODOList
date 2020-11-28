@@ -40,6 +40,12 @@ export const ToDoListItemStyled = styled.div`
   align-items: center;
   margin: 0 15px 15px 15px;
 `
-export const ToDoListItemName = styled.div`
+
+interface ToDoListItemNameProps {
+  readonly isActive?: boolean;
+};
+
+export const ToDoListItemName = styled.div<ToDoListItemNameProps>`
   padding-right: 10px;
+  color: ${props => props.isActive ? 'green' : 'black'};
 `
