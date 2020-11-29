@@ -35,17 +35,33 @@ export const ToDoListContainer = styled.div`
   flex-wrap: wrap;
 `
 
-export const ToDoListItemStyled = styled.div`
+export const ToDoListItemsContainer = styled.ul`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
+
+export const ToDoListItemStyled = styled.li`
   display: flex;
   align-items: center;
   margin: 0 15px 15px 15px;
 `
 
-interface ToDoListItemNameProps {
+interface ToDoListsItemNameProps {
   readonly isActive?: boolean;
 };
 
-export const ToDoListItemName = styled.div<ToDoListItemNameProps>`
+export const ToDoListsItemName = styled.div<ToDoListsItemNameProps>`
   padding-right: 10px;
   color: ${props => props.isActive ? 'green' : 'black'};
+`
+
+interface ToDoListItemNameProps {
+  readonly completed?: boolean;
+};
+
+export const ToDoListItemName = styled.label<ToDoListItemNameProps>`
+  padding-right: 10px;
+  color: ${props => props.completed ? 'green' : 'black'};
+  text-decoration: ${props => props.completed ? 'line-through' : 'none'};
 `
