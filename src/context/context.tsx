@@ -4,7 +4,7 @@ import { IToDoList, IToDoListItem } from "../components/ToDoLists/ToDoLists";
 type ToDos = {  
   toDoLists: IToDoList[],
   addTodoListItem: (list: IToDoList, itemName: string) => void,
-  removeTodoListItem: (list: IToDoList, itemName: string) => void,
+  removeTodoListItem: (list: IToDoList, itemId: string) => void,
   handleChangeCompleteListItem: (list: IToDoList, listItem: IToDoListItem) => void,
 };
 

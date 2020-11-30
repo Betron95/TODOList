@@ -3,8 +3,10 @@ import { ToDoContext } from "../../context/context";
 import { Button, NewToDo, Title } from '../../styles/common';
 import RemoveDialog from '../RemoveDialog/RemoveDialog';
 import MyTabs from '../Tabs/Tabs';
+import { v4 as uuidv4 } from 'uuid';
 
 export interface IToDoListItem {
+  id: string,
   text: string,
   completed: boolean,
 }
@@ -19,11 +21,11 @@ function ToDoLists() {
     [
       {
         name: 'first',
-        items: [{text: '1', completed: false}, {text: '2', completed: false}, {text: '3', completed: false}],
+        items: [{ id: '1', text: '1', completed: false }, { id: '2', text: '2', completed: false }, { id: '3', text: '3', completed: false }],
       },
       {
         name: 'second',
-        items: [{text: '4', completed: false}, {text: '5', completed: false}, {text: '6', completed: false}],
+        items: [{ id: '4', text: '4', completed: false }, { id: '4', text: '5', completed: false }, { id: '6', text: '6', completed: false }],
       },
     ]
   );
@@ -34,14 +36,14 @@ function ToDoLists() {
 
   const handleRemoveItemHandler = (show: boolean, list?: IToDoList) => {
     setIsOpenDialog(show);
-    if(list) {
+    if (list) {
       setListForRemove(list);
     }
   }
 
   const addTodoList = (newListName: string) => {
-    const newList = {name: newListName, items: []};
-    setToDoLists(() => [...toDoLists,newList]);
+    const newList = { name: newListName, items: [] };
+    setToDoLists(() => [...toDoLists, newList]);
     setNewListName('');
   }
 
@@ -51,42 +53,44 @@ function ToDoLists() {
 
   const addTodoListItem = (list: IToDoList, item: string) => {
     setToDoLists((todoList) => {
-        return todoList.map((tl) => {
-          if(tl === list) {
-            const updatedList = {...tl, items: [...list.items, {text: item, completed: false}]};
-            return updatedList
-          }
-          return tl;
-        })
+      return todoList.map((tl) => {
+        if (tl === list) {
+          const updatedList = { ...tl, items: [...list.items, { id: uuidv4(), text: item, completed: false }] };
+          return updatedList
+        }
+        return tl;
+      })
     });
   }
 
   const handleChangeCompleteListItem = (list: IToDoList, item: IToDoListItem) => {
     setToDoLists((todoList) => {
       return todoList.map((tl) => {
-        if(tl === list) {
-          const updatedList = {...tl, items: [...list.items.map((iterableItem) => {
-            if (iterableItem.text === item.text) {
-              return {...item, completed: item.completed};
-            }
-            return iterableItem;
-          })]};
+        if (tl === list) {
+          const updatedList = {
+            ...tl, items: [...list.items.map((iterableItem) => {
+              if (iterableItem.id === item.id) {
+                return { ...item, completed: item.completed };
+              }
+              return iterableItem;
+            })]
+          };
           return updatedList
         }
         return tl;
       })
-  });
+    });
   }
 
-  const removeTodoListItem = (list: IToDoList, item: string) => {
+  const removeTodoListItem = (list: IToDoList, id: string) => {
     setToDoLists((todoList) => {
-        return todoList.map((tl) => {
-          if(tl === list) {
-            const updatedList = {...tl, items: list.items.filter((iterableItem: IToDoListItem) => iterableItem.text !== item)};
-            return updatedList;
-          }
-          return tl;
-        })
+      return todoList.map((tl) => {
+        if (tl === list) {
+          const updatedList = { ...tl, items: list.items.filter((iterableItem: IToDoListItem) => iterableItem.id !== id) };
+          return updatedList;
+        }
+        return tl;
+      })
     });
   }
 
@@ -95,25 +99,25 @@ function ToDoLists() {
   }
 
   return (
-    <ToDoContext.Provider value={{toDoLists, addTodoListItem, removeTodoListItem, handleChangeCompleteListItem}}>
+    <ToDoContext.Provider value={{ toDoLists, addTodoListItem, removeTodoListItem, handleChangeCompleteListItem }}>
       <div>
         <NewToDo>
           <Title>Create new list:</Title>
-          <input type='text' value={newListName} onChange={({target: {value}}) => changeNewListName(value)} />
+          <input type='text' value={newListName} onChange={({ target: { value } }) => changeNewListName(value)} />
           <Button onClick={() => addTodoList(newListName)}>Add</Button>
         </NewToDo>
         <MyTabs
           toDoLists={toDoLists}
-          handleRemoveItemHandler={handleRemoveItemHandler} 
+          handleRemoveItemHandler={handleRemoveItemHandler}
         />
-        {isOpenDialog && 
-            <RemoveDialog 
-              closeDialog={() => handleRemoveItemHandler(false)} 
-              removeHandler={() => {
-                removeTodoList(listForRemove)
-                handleRemoveItemHandler(false);
-              }} 
-            />
+        {isOpenDialog &&
+          <RemoveDialog
+            closeDialog={() => handleRemoveItemHandler(false)}
+            removeHandler={() => {
+              removeTodoList(listForRemove)
+              handleRemoveItemHandler(false);
+            }}
+          />
         }
       </div>
     </ToDoContext.Provider>

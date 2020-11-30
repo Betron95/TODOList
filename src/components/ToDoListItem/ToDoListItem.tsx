@@ -14,18 +14,19 @@ const StyledCheckbox = withStyles({
 
 export interface ItemProps {
   currentList: IToDoList,
+  id: string,
   text: string,
   completed: boolean
 }
 
-function ToDoListItem({ currentList, text = '', completed = false }: ItemProps) {
+function ToDoListItem({ currentList, id, text = '', completed = false }: ItemProps) {
   const [isChecked, setIsChecked] = useState(completed);
   const [isOpenDialog, setIsOpenDialog] = useState(false);
 
   const toggleCheckbox = (event: { target: HTMLInputElement }) => {
     setIsChecked(event.target.checked);
     if (handleChangeCompleteListItem) {
-      handleChangeCompleteListItem(currentList, { text, completed: event.target.checked });
+      handleChangeCompleteListItem(currentList, { id, text, completed: event.target.checked });
     }
   };
 
@@ -37,18 +38,18 @@ function ToDoListItem({ currentList, text = '', completed = false }: ItemProps) 
 
   return (
     <ToDoListItemStyled>
-      <ToDoListItemName completed={isChecked} htmlFor={text}>{text}</ToDoListItemName>
+      <ToDoListItemName completed={isChecked} htmlFor={id}>{text}</ToDoListItemName>
       <StyledCheckbox
         className={"custom-checkbox"}
         checked={isChecked}
-        id={text}
+        id={id}
         onChange={toggleCheckbox}
       />
       <Cross onClick={() => handleRemoveItemHandler(true)} />
       {isOpenDialog &&
         <RemoveDialog
           closeDialog={() => handleRemoveItemHandler(false)}
-          removeHandler={() => removeTodoListItem && removeTodoListItem(currentList, text)}
+          removeHandler={() => removeTodoListItem && removeTodoListItem(currentList, id)}
         />
       }
     </ToDoListItemStyled>
