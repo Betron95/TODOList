@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ToDoContext } from "../../context/context";
-import { Button, NewToDo, Title, ToDoListsContainer, ToDoListItemStyled, ToDoListsItemName } from '../../styles/common';
+import { Button, NewToDo, Title, ToDoListsContainer, ToDoListItemStyled, ToDoListsItemName, Cross } from '../../styles/common';
+import RemoveDialog from '../RemoveDialog/RemoveDialog';
 import ToDoList from '../ToDoList/ToDoList';
 
 export interface IToDoListItem {
@@ -28,6 +29,18 @@ function ToDoLists() {
   );
 
   const [newListName, setNewListName] = useState('');
+  const [isOpenDialog, setIsOpenDialog] = useState(false);
+  const [listForRemove, setListForRemove] = useState<IToDoList>({
+    name: 'temp',
+    items: [{text: '1', completed: false}, {text: '2', completed: false}, {text: '3', completed: false}],
+  },);
+
+  const handleRemoveItemHandler = (show: boolean, list?: IToDoList) => {
+    setIsOpenDialog(show);
+    if(list) {
+      setListForRemove(list);
+    }
+  }
 
   const addTodoList = (newListName: string) => {
     const newList = {name: newListName, items: []};
@@ -105,10 +118,19 @@ function ToDoLists() {
           {toDoLists.map((list, index) => 
             <ToDoListItemStyled key={index}>
               <ToDoListsItemName isActive={list === currentList} onClick={() => {setCurrentList(list)}}>{list.name}</ToDoListsItemName>
-              <Button onClick={() => removeTodoList(list)}>Remove</Button>
+              <Cross onClick={() => handleRemoveItemHandler(true, list)}/>
             </ToDoListItemStyled>
           )}
         </ToDoListsContainer>
+        {isOpenDialog && 
+            <RemoveDialog 
+              closeDialog={() => handleRemoveItemHandler(false)} 
+              removeHandler={() => {
+                removeTodoList(listForRemove)
+                handleRemoveItemHandler(false);
+              }} 
+            />
+        }
       </div>
       {currentList && <ToDoList currentList={currentList} />}
     </ToDoContext.Provider>

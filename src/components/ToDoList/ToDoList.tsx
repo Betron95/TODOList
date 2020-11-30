@@ -29,8 +29,8 @@ function ToDoList({ currentList }: ToDoListProps) {
         <Button onClick={addNewListItem}>Add new Item</Button>
       </NewToDo>
       <ToDoListItemsContainer>
-        {currentList.items.map(({text, completed}: IToDoListItem) => 
-        <ToDoListItem key={text} currentList={currentList} text={text} completed={completed} />)}
+        {currentList.items.map(({ text, completed }: IToDoListItem) =>
+          <ToDoListItem key={text} currentList={currentList} text={text} completed={completed} />)}
       </ToDoListItemsContainer>
     </div>
   )
