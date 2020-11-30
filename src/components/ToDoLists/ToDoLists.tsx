@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { ToDoContext } from "../../context/context";
-import { Button, NewToDo, Title, ToDoListsContainer, ToDoListItemStyled, ToDoListsItemName, Cross } from '../../styles/common';
+import { Button, NewToDo, Title } from '../../styles/common';
 import RemoveDialog from '../RemoveDialog/RemoveDialog';
-import ToDoList from '../ToDoList/ToDoList';
+import MyTabs from '../Tabs/Tabs';
 
 export interface IToDoListItem {
   text: string,
@@ -30,10 +30,7 @@ function ToDoLists() {
 
   const [newListName, setNewListName] = useState('');
   const [isOpenDialog, setIsOpenDialog] = useState(false);
-  const [listForRemove, setListForRemove] = useState<IToDoList>({
-    name: 'temp',
-    items: [{text: '1', completed: false}, {text: '2', completed: false}, {text: '3', completed: false}],
-  },);
+  const [listForRemove, setListForRemove] = useState<IToDoList | null>(null);
 
   const handleRemoveItemHandler = (show: boolean, list?: IToDoList) => {
     setIsOpenDialog(show);
@@ -45,15 +42,11 @@ function ToDoLists() {
   const addTodoList = (newListName: string) => {
     const newList = {name: newListName, items: []};
     setToDoLists(() => [...toDoLists,newList]);
-    setCurrentList(newList);
     setNewListName('');
   }
 
-  const removeTodoList = (list: IToDoList) => {
+  const removeTodoList = (list: IToDoList | null) => {
     setToDoLists(() => toDoLists.filter((iterableList: IToDoList) => iterableList !== list));
-    if(list === currentList) {
-      setCurrentList(null);
-    }
   }
 
   const addTodoListItem = (list: IToDoList, item: string) => {
@@ -61,7 +54,6 @@ function ToDoLists() {
         return todoList.map((tl) => {
           if(tl === list) {
             const updatedList = {...tl, items: [...list.items, {text: item, completed: false}]};
-            setCurrentList(updatedList);
             return updatedList
           }
           return tl;
@@ -79,7 +71,6 @@ function ToDoLists() {
             }
             return iterableItem;
           })]};
-          setCurrentList(updatedList);
           return updatedList
         }
         return tl;
@@ -92,7 +83,6 @@ function ToDoLists() {
         return todoList.map((tl) => {
           if(tl === list) {
             const updatedList = {...tl, items: list.items.filter((iterableItem: IToDoListItem) => iterableItem.text !== item)};
-            setCurrentList(updatedList);
             return updatedList;
           }
           return tl;
@@ -100,11 +90,9 @@ function ToDoLists() {
     });
   }
 
-  const changeNewListName = (value: any) => {
+  const changeNewListName = (value: string) => {
     setNewListName(value);
   }
-
-  const [currentList, setCurrentList] = useState<IToDoList|null>(toDoLists[0]);
 
   return (
     <ToDoContext.Provider value={{toDoLists, addTodoListItem, removeTodoListItem, handleChangeCompleteListItem}}>
@@ -114,14 +102,10 @@ function ToDoLists() {
           <input type='text' value={newListName} onChange={({target: {value}}) => changeNewListName(value)} />
           <Button onClick={() => addTodoList(newListName)}>Add</Button>
         </NewToDo>
-        <ToDoListsContainer>
-          {toDoLists.map((list, index) => 
-            <ToDoListItemStyled key={index}>
-              <ToDoListsItemName isActive={list === currentList} onClick={() => {setCurrentList(list)}}>{list.name}</ToDoListsItemName>
-              <Cross onClick={() => handleRemoveItemHandler(true, list)}/>
-            </ToDoListItemStyled>
-          )}
-        </ToDoListsContainer>
+        <MyTabs
+          toDoLists={toDoLists}
+          handleRemoveItemHandler={handleRemoveItemHandler} 
+        />
         {isOpenDialog && 
             <RemoveDialog 
               closeDialog={() => handleRemoveItemHandler(false)} 
@@ -132,7 +116,6 @@ function ToDoLists() {
             />
         }
       </div>
-      {currentList && <ToDoList currentList={currentList} />}
     </ToDoContext.Provider>
   );
 }

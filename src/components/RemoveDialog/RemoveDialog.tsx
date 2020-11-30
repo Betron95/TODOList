@@ -4,8 +4,12 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
+export interface DialogProps {
+  closeDialog: () => void,
+  removeHandler: () => void,
+}
 
-function RemoveDialog({closeDialog, removeHandler}: { closeDialog: any, removeHandler: any}) {
+function RemoveDialog({closeDialog, removeHandler}: DialogProps) {
 
   const handleClose = () => {
     closeDialog();

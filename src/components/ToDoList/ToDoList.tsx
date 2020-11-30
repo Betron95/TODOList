@@ -17,7 +17,9 @@ function ToDoList({ currentList }: ToDoListProps) {
   }
 
   const addNewListItem = () => {
-    addTodoListItem(currentList, itemName)
+    if (addTodoListItem) {
+      addTodoListItem(currentList, itemName)
+    }
     changeNewItemName('');
   }
 

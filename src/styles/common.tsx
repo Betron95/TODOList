@@ -7,11 +7,16 @@ export const Button = styled.button`
   color: palevioletred;
   margin: 0.5em 1em;
   padding: 0.25em 1em;
+  cursor: pointer;
   &:hover, &:active, &:focus {
     background: palevioletred;
     color: white;
     outline: none;
   }
+`
+export const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
 `
 
 export const Head = styled.header`
@@ -62,7 +67,9 @@ interface ToDoListItemNameProps {
 };
 
 export const ToDoListItemName = styled.label<ToDoListItemNameProps>`
-  padding-right: 10px;
+  margin-right: 10px;
+  width: 150px;
+  overflow: hidden;
   color: ${props => props.completed ? 'green' : 'black'};
   text-decoration: ${props => props.completed ? 'line-through' : 'none'};
 `
