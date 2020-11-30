@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ToDoContext } from "../../context/context";
-import { Button, NewToDo, Title, ToDoListContainer, ToDoListItemStyled, ToDoListsItemName } from '../../styles/common';
+import { Button, NewToDo, Title, ToDoListsContainer, ToDoListItemStyled, ToDoListsItemName } from '../../styles/common';
 import ToDoList from '../ToDoList/ToDoList';
 
 export interface IToDoListItem {
@@ -101,14 +101,14 @@ function ToDoLists() {
           <input type='text' value={newListName} onChange={({target: {value}}) => changeNewListName(value)} />
           <Button onClick={() => addTodoList(newListName)}>Add</Button>
         </NewToDo>
-        <ToDoListContainer>
+        <ToDoListsContainer>
           {toDoLists.map((list, index) => 
             <ToDoListItemStyled key={index}>
               <ToDoListsItemName isActive={list === currentList} onClick={() => {setCurrentList(list)}}>{list.name}</ToDoListsItemName>
               <Button onClick={() => removeTodoList(list)}>Remove</Button>
             </ToDoListItemStyled>
           )}
-        </ToDoListContainer>
+        </ToDoListsContainer>
       </div>
       {currentList && <ToDoList currentList={currentList} />}
     </ToDoContext.Provider>

@@ -30,7 +30,7 @@ export const NewToDo = styled.div`
   text-align: center;
 `
 
-export const ToDoListContainer = styled.div`
+export const ToDoListsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
 `
@@ -44,6 +44,7 @@ export const ToDoListItemsContainer = styled.ul`
 export const ToDoListItemStyled = styled.li`
   display: flex;
   align-items: center;
+  position: relative;
   margin: 0 15px 15px 15px;
 `
 
@@ -64,4 +65,32 @@ export const ToDoListItemName = styled.label<ToDoListItemNameProps>`
   padding-right: 10px;
   color: ${props => props.completed ? 'green' : 'black'};
   text-decoration: ${props => props.completed ? 'line-through' : 'none'};
+`
+export const Cross = styled.span`
+  position: absolute;
+  right:0;
+  top: 0;
+  width: 5px;
+  height: 5px;
+  opacity: 0.3;
+  &:hover {
+    opacity: 1;
+    cursor: pointer;
+    &:before, &:after {
+      background-color: red;
+    }
+  }
+  &:before, &:after {
+    position: absolute;
+    top: 1px;
+    left: 15px;
+    content: ' ';
+    height: 20px;
+    width: 2px;
+    background-color: #333;
+    transform: rotate(45deg);
+  }
+  &:after {
+    transform: rotate(-45deg);
+  }
 `

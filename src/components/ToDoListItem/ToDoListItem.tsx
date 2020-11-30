@@ -1,6 +1,6 @@
 import { useState, useContext } from "react";
 import { ToDoContext } from "../../context/context";
-import { ToDoListItemStyled, ToDoListItemName, Button } from "../../styles/common";
+import { ToDoListItemStyled, ToDoListItemName, Cross } from "../../styles/common";
 import { IToDoList } from "../ToDoLists/ToDoLists";
 
 export interface ItemProps {
@@ -20,7 +20,7 @@ function ToDoListItem({ currentList, text = '', completed = false }: ItemProps) 
       <ToDoListItemStyled>
         <ToDoListItemName completed={isChecked} htmlFor={text}>{text}</ToDoListItemName>
         <input type='checkbox' checked={isChecked} onChange={toogleCheckbox} id={text} />
-        <Button onClick={() => removeTodoListItem(currentList, text)}>Remove</Button>
+        <Cross onClick={() => removeTodoListItem(currentList, text)} />
       </ToDoListItemStyled>
   );
 }
