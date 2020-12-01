@@ -25,7 +25,7 @@ function ToDoLists() {
       },
       {
         name: 'second',
-        items: [{ id: '4', text: '4', completed: false }, { id: '4', text: '5', completed: false }, { id: '6', text: '6', completed: false }],
+        items: [{ id: '4', text: '4', completed: false }, { id: '5', text: '5', completed: false }, { id: '6', text: '6', completed: false }],
       },
     ]
   );
