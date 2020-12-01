@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
@@ -8,12 +8,14 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import { IToDoList } from "../ToDoLists/ToDoLists";
 import ToDoList from '../ToDoList/ToDoList';
-import { Button, ButtonContainer } from '../../styles/common'; 
+import { Button, ButtonContainer } from '../../styles/common';
+
+type numberOrStringType = number | string;
 
 export interface TabPanelProps {
   children: React.ReactNode,
-  index: number | string,
-  value: number | string
+  index: numberOrStringType,
+  value: numberOrStringType
 }
 
 function TabPanel(props: TabPanelProps) {
@@ -56,7 +58,7 @@ function MyTabs({ toDoLists, handleRemoveItemHandler }:
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
-  const handleChange = (event: any, newValue: number) => {
+  const handleChange = (event: ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
   };
 
