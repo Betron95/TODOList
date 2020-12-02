@@ -5,8 +5,8 @@ export const Button = styled.button`
   border-radius: 3px;
   border: 2px solid palevioletred;
   color: ${props => props.theme.colors.main};
-  margin: 0.5em 1em;
-  padding: 0.25em 1em;
+  margin: 0 1em;
+  padding: 0.7em 2em;
   cursor: pointer;
   &:hover, &:active, &:focus {
     background: palevioletred;
@@ -25,6 +25,7 @@ export const Title = styled.h1`
 `
 export const NewToDo = styled.div`
   text-align: center;
+  margin-bottom: 25px;
 `
 
 export const ToDoListItemsContainer = styled.ul`

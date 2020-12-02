@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { ToDoContext } from "../../context/context";
-import { Button, Container, NewToDo, Title } from '../../styles/common';
+import { Container } from '../../styles/common';
 import RemoveDialog from '../RemoveDialog/RemoveDialog';
 import MyTabs from '../Tabs/Tabs';
 import { v4 as uuidv4 } from 'uuid';
-import { CircularProgress, makeStyles } from '@material-ui/core';
+import { CircularProgress, MuiThemeProvider } from '@material-ui/core';
+import { MuiTheme } from '../../styles/mui-theme';
+import AddNewToDo from '../App/AddNewToDo/AddNewToDo';
 
 export interface IToDoListItem {
   id: string,
@@ -17,15 +19,8 @@ export interface IToDoList {
   items: IToDoListItem[],
 }
 
-const useStyles = makeStyles({
-  root: {
-    color: 'palevioletred',
-  }
-});
-
 function ToDoLists() {
   const [toDoLists, setToDoLists] = useState<IToDoList[]>([]);
-  const loaderStyles = useStyles();
 
   useEffect(() => {
     fetch('https://my-json-server.typicode.com/Betron95/todosServer/todos')
@@ -33,7 +28,6 @@ function ToDoLists() {
       .then(todoLists => setToDoLists(todoLists))
   }, []);
 
-  const [newListName, setNewListName] = useState('');
   const [isOpenDialog, setIsOpenDialog] = useState(false);
   const [listForRemove, setListForRemove] = useState<IToDoList | null>(null);
 
@@ -47,7 +41,6 @@ function ToDoLists() {
   const addTodoList = (newListName: string) => {
     const newList = { name: newListName, items: [] };
     setToDoLists(() => [...toDoLists, newList]);
-    setNewListName('');
   }
 
   const removeTodoList = (list: IToDoList | null) => {
@@ -97,33 +90,27 @@ function ToDoLists() {
     });
   }
 
-  const changeNewListName = (value: string) => {
-    setNewListName(value);
-  }
-
   return (
     <ToDoContext.Provider value={{ toDoLists, addTodoListItem, removeTodoListItem, handleChangeCompleteListItem }}>
-      {toDoLists.length ? <div>
-        <NewToDo>
-          <Title>Create new list:</Title>
-          <input type='text' value={newListName} onChange={({ target: { value } }) => changeNewListName(value)} />
-          <Button onClick={() => addTodoList(newListName)}>Add</Button>
-        </NewToDo>
-        <MyTabs
-          toDoLists={toDoLists}
-          handleRemoveItemHandler={handleRemoveItemHandler}
-        />
-        {isOpenDialog &&
-          <RemoveDialog
-            closeDialog={() => handleRemoveItemHandler(false)}
-            removeHandler={() => {
-              removeTodoList(listForRemove)
-              handleRemoveItemHandler(false);
-            }}
+      <MuiThemeProvider theme={MuiTheme}>
+        {toDoLists.length ? <div> 
+          <AddNewToDo label={'Add new todo list'} clickHandler={addTodoList} buttonText={'Add'} title={'Create new list:'} />
+          <MyTabs
+            toDoLists={toDoLists}
+            handleRemoveItemHandler={handleRemoveItemHandler}
           />
+          {isOpenDialog &&
+            <RemoveDialog
+              closeDialog={() => handleRemoveItemHandler(false)}
+              removeHandler={() => {
+                removeTodoList(listForRemove)
+                handleRemoveItemHandler(false);
+              }}
+            />
+          }
+        </div> : <Container><CircularProgress size={300} /></Container>
         }
-      </div> : <Container><CircularProgress size={300} classes={{root: loaderStyles.root}} /></Container>
-      }
+      </MuiThemeProvider>
     </ToDoContext.Provider>
   );
 }

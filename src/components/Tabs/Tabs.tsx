@@ -3,7 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import { IToDoList } from "../ToDoLists/ToDoLists";
@@ -62,30 +61,7 @@ function MyTabs({ toDoLists, handleRemoveItemHandler }:
     setValue(newValue);
   };
 
-  const theme = createMuiTheme({
-    overrides: {
-      MuiTab: {
-        root: {
-          color: "palevioletred",
-          "&$selected": {
-            color: "palevioletred",
-            "&:hover": {
-              color: "palevioletred"
-            }
-          }
-        },
-        textColorPrimary: {
-          color: 'gray',
-          '&$selected': {
-            color: 'palevioletred',
-          }
-        },
-      }
-    }
-  });
-
   return (
-    <MuiThemeProvider theme={theme}>
       <div className={classes.root}>
         <AppBar position="static" color="default">
           <Tabs
@@ -112,7 +88,6 @@ function MyTabs({ toDoLists, handleRemoveItemHandler }:
           </TabPanel>
         )}
       </div>
-    </MuiThemeProvider>
   );
 }
 

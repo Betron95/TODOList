@@ -1,6 +1,6 @@
-import React, { useState, useContext } from 'react';
-import { ToDoContext } from '../../context/context';
-import { Title, ToDoListItemsContainer, NewToDo, Button } from '../../styles/common';
+import React from 'react';
+import { ToDoListItemsContainer } from '../../styles/common';
+import AddNewToDo from '../App/AddNewToDo/AddNewToDo';
 import ToDoListItem from '../ToDoListItem/ToDoListItem';
 import { IToDoList, IToDoListItem } from '../ToDoLists/ToDoLists';
 
@@ -9,27 +9,9 @@ export interface ToDoListProps {
 }
 
 function ToDoList({ currentList }: ToDoListProps) {
-  const { addTodoListItem } = useContext(ToDoContext);
-  const [itemName, setItemName] = useState('');
-
-  const changeNewItemName = (value: string) => {
-    setItemName(value);
-  }
-
-  const addNewListItem = () => {
-    if (addTodoListItem) {
-      addTodoListItem(currentList, itemName)
-    }
-    changeNewItemName('');
-  }
-
   return (
     <div>
-      <Title>To Do Items:</Title>
-      <NewToDo>
-        <input type="text" value={itemName} onChange={({ target: { value } }) => changeNewItemName(value)} />
-        <Button onClick={addNewListItem}>Add new Item</Button>
-      </NewToDo>
+      <AddNewToDo currentList={currentList} label={'Add new todo item'} title={'To Do Items:'} />
       <ToDoListItemsContainer>
         {currentList.items.map(({ id, text, completed }: IToDoListItem) =>
           <ToDoListItem key={id} currentList={currentList} id={id} text={text} completed={completed} />)}
