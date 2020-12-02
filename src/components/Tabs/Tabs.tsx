@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import { IToDoList } from "../ToDoLists/ToDoLists";
 import ToDoList from '../ToDoList/ToDoList';
-import { Button, ButtonContainer } from '../../styles/common';
+import { Button, Container } from '../../styles/common';
 
 type numberOrStringType = number | string;
 
@@ -105,9 +105,9 @@ function MyTabs({ toDoLists, handleRemoveItemHandler }:
         </AppBar>
         {toDoLists.map((list, index) =>
           <TabPanel value={value} key={index} index={index}>
-            <ButtonContainer>
+            <Container>
               <Button onClick={() => handleRemoveItemHandler(true, list)}>Remove this list</Button>
-            </ButtonContainer>
+            </Container>
             <ToDoList currentList={list} />
           </TabPanel>
         )}

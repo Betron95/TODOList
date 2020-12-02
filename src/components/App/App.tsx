@@ -1,12 +1,14 @@
+import { ThemeProvider } from "styled-components";
+import { mainTheme } from "../../styles/main-theme";
 import Header from "../Header/Header";
 import ToDoLists from "../ToDoLists/ToDoLists";
 
 function App() {
   return (
-    <div className="App">
+    <ThemeProvider theme={mainTheme}>
       <Header />
       <ToDoLists />
-    </div>
+    </ThemeProvider>
   );
 }
 

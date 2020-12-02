@@ -4,7 +4,7 @@ export const Button = styled.button`
   background: transparent;
   border-radius: 3px;
   border: 2px solid palevioletred;
-  color: palevioletred;
+  color: ${props => props.theme.colors.main};
   margin: 0.5em 1em;
   padding: 0.25em 1em;
   cursor: pointer;
@@ -14,30 +14,17 @@ export const Button = styled.button`
     outline: none;
   }
 `
-export const ButtonContainer = styled.div`
+export const Container = styled.div`
   display: flex;
   justify-content: center;
 `
 
-export const Head = styled.header`
-  background: transparent;
-  border-radius: 3px;
-  border: 2px solid palevioletred;
-  color: palevioletred;
-  margin: 0.5em 1em;
-  padding: 0.25em 1em;
-`
 export const Title = styled.h1`
   text-align: center;
   color: palevioletred;
 `
 export const NewToDo = styled.div`
   text-align: center;
-`
-
-export const ToDoListsContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
 `
 
 export const ToDoListItemsContainer = styled.ul`
@@ -53,15 +40,6 @@ export const ToDoListItemStyled = styled.li`
   margin: 0 15px 15px 15px;
 `
 
-interface ToDoListsItemNameProps {
-  readonly isActive?: boolean;
-};
-
-export const ToDoListsItemName = styled.div<ToDoListsItemNameProps>`
-  padding-right: 10px;
-  color: ${props => props.isActive ? 'green' : 'black'};
-`
-
 interface ToDoListItemNameProps {
   readonly completed?: boolean;
 };
@@ -70,6 +48,8 @@ export const ToDoListItemName = styled.label<ToDoListItemNameProps>`
   margin-right: 10px;
   width: 150px;
   overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   color: ${props => props.completed ? 'green' : 'black'};
   text-decoration: ${props => props.completed ? 'line-through' : 'none'};
 `

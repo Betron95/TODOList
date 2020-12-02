@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ToDoContext } from "../../context/context";
-import { Button, NewToDo, Title } from '../../styles/common';
+import { Button, Container, NewToDo, Title } from '../../styles/common';
 import RemoveDialog from '../RemoveDialog/RemoveDialog';
 import MyTabs from '../Tabs/Tabs';
 import { v4 as uuidv4 } from 'uuid';
+import { CircularProgress, makeStyles } from '@material-ui/core';
 
 export interface IToDoListItem {
   id: string,
@@ -16,19 +17,21 @@ export interface IToDoList {
   items: IToDoListItem[],
 }
 
+const useStyles = makeStyles({
+  root: {
+    color: 'palevioletred',
+  }
+});
+
 function ToDoLists() {
-  const [toDoLists, setToDoLists] = useState<IToDoList[]>(
-    [
-      {
-        name: 'first',
-        items: [{ id: '1', text: '1', completed: false }, { id: '2', text: '2', completed: false }, { id: '3', text: '3', completed: false }],
-      },
-      {
-        name: 'second',
-        items: [{ id: '4', text: '4', completed: false }, { id: '5', text: '5', completed: false }, { id: '6', text: '6', completed: false }],
-      },
-    ]
-  );
+  const [toDoLists, setToDoLists] = useState<IToDoList[]>([]);
+  const loaderStyles = useStyles();
+
+  useEffect(() => {
+    fetch('https://my-json-server.typicode.com/Betron95/todosServer/todos')
+      .then(response => response.json())
+      .then(todoLists => setToDoLists(todoLists))
+  }, []);
 
   const [newListName, setNewListName] = useState('');
   const [isOpenDialog, setIsOpenDialog] = useState(false);
@@ -100,7 +103,7 @@ function ToDoLists() {
 
   return (
     <ToDoContext.Provider value={{ toDoLists, addTodoListItem, removeTodoListItem, handleChangeCompleteListItem }}>
-      <div>
+      {toDoLists.length ? <div>
         <NewToDo>
           <Title>Create new list:</Title>
           <input type='text' value={newListName} onChange={({ target: { value } }) => changeNewListName(value)} />
@@ -119,7 +122,8 @@ function ToDoLists() {
             }}
           />
         }
-      </div>
+      </div> : <Container><CircularProgress size={300} classes={{root: loaderStyles.root}} /></Container>
+      }
     </ToDoContext.Provider>
   );
 }
