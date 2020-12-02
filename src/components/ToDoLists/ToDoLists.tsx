@@ -21,12 +21,15 @@ export interface IToDoList {
 
 function ToDoLists() {
   const [toDoLists, setToDoLists] = useState<IToDoList[]>([]);
+  const [isLoadedLists, setIsLoadedLists] = useState(false);
 
   useEffect(() => {
     fetch('https://my-json-server.typicode.com/Betron95/todosServer/todos')
       .then(response => response.json())
-      .then(todoLists => setToDoLists(todoLists))
-  }, []);
+      .then(todoLists => {
+        setToDoLists(todoLists);
+        setIsLoadedLists(true);  
+      })}, []);
 
   const [isOpenDialog, setIsOpenDialog] = useState(false);
   const [listForRemove, setListForRemove] = useState<IToDoList | null>(null);
@@ -93,7 +96,7 @@ function ToDoLists() {
   return (
     <ToDoContext.Provider value={{ toDoLists, addTodoListItem, removeTodoListItem, handleChangeCompleteListItem }}>
       <MuiThemeProvider theme={MuiTheme}>
-        {toDoLists.length ? <div> 
+        {isLoadedLists ? <div> 
           <AddNewToDo label={'Add new todo list'} clickHandler={addTodoList} buttonText={'Add'} title={'Create new list:'} />
           <MyTabs
             toDoLists={toDoLists}
